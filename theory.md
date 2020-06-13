@@ -1,15 +1,26 @@
 # Theoretical interview questions
 
-* The list of questions is based on this post: https://hackernoon.com/160-data-science-interview-questions-415s3y2a
+<table>
+   <tr>
+      <td>⚠️</td>
+      <td>
+         The answers here are given by the community. Be careful and double check the answers before using them. <br>
+         If you see an error, please create a PR with a fix
+      </td>
+   </tr>
+</table>
+
+
+* The list of questions is based on [this post](https://medium.com/data-science-insider/160-data-science-interview-questions-14dbd8bf0a08?source=friends_link&sk=7acf122a017c672a95f70c7cb7b585c0)
 * Legend: 👶 easy ‍⭐️ medium 🚀 expert
 * Do you know how to answer questions without answers? Please create a PR
-* See an error? Please create a PR with fix
+
 
 ## Supervised machine learning
 
 **What is supervised machine learning? 👶**
 
-A case when we have both features (the matrix X) and the labels (the vector y) 
+A case when we have both features (the matrix X) and the labels (the vector y)
 
 <br/>
 
@@ -18,7 +29,8 @@ A case when we have both features (the matrix X) and the labels (the vector y)
 **What is regression? Which models can you use to solve a regression problem? 👶**
 
 Regression is a part of supervised ML. Regression models investigate the relationship between a dependent (target) and independent variable (s) (predictor).
-Here are some common regression models:
+Here are some common regression models
+
 - *Linear Regression* establishes a linear relationship between target and predictor (s). It predicts a numeric value and has a shape of a straight line.
 - *Polynomial Regression* has a regression equation with the power of independent variable more than 1. It is a curve that fits into the data points.
 - *Ridge Regression* helps when predictors are highly correlated (multicollinearity problem). It penalizes the squares of regression coefficients but doesn’t allow to reach zeros (uses l2 regularization).
@@ -28,7 +40,7 @@ Here are some common regression models:
 
 **What is linear regression? When do we use it? 👶**
 
-Linear regression is a model that assumes a linear relationship between the input variables (X) and the single output variable (y). 
+Linear regression is a model that assumes a linear relationship between the input variables (X) and the single output variable (y).
 
 With a simple equation:
 
@@ -36,7 +48,7 @@ With a simple equation:
 y = B0 + B1*x1 + ... + Bn * xN
 ```
 
-B is regression coefficients, x values are the independent (explanatory) variables  and y is dependent variable. 
+B is regression coefficients, x values are the independent (explanatory) variables  and y is dependent variable.
 
 The case of one explanatory variable is called simple linear regression. For more than one explanatory variable, the process is called multiple linear regression.
 
@@ -54,17 +66,31 @@ y = B0 + B1*x1 + ... + Bn * xN
 
 <br/>
 
+**What are the main assumptions of linear regression? ⭐**
+
+There are several assumptions of linear regression. If any of them is violated, model predictions and interpretation may be worthless or misleading.
+
+1. **Linear relationship** between features and target variable.
+2. **Additivity** means that the effect of changes in one of the features on the target variable does not depend on values of other features. For example, a model for predicting revenue of a company have of two features - the number of items _a_ sold and the number of items _b_ sold. When company sells more items _a_ the revenue increases and this is independent of the number of items _b_ sold. But, if customers who buy _a_ stop buying _b_, the additivity assumption is violated.
+3. Features are not correlated (no **collinearity**) since it can be difficult to separate out the individual effects of collinear features on the target variable.
+4. Errors are independently and identically normally distributed (y<sub>i</sub> = B0 + B1*x1<sub>i</sub> + ... + error<sub>i</sub>):
+   1. No correlation between errors (consecutive errors in the case of time series data).
+   2. Constant variance of errors - **homoscedasticity**. For example, in case of time series, seasonal patterns can increase errors in seasons with higher activity.
+   3. Errors are normaly distributed, otherwise some features will have more influence on the target variable than to others. If the error distribution is significantly non-normal, confidence intervals may be too wide or too narrow.
+
+<br/>
+
 **What’s the normal distribution? Why do we care about it? 👶**
 
 The normal distribution is a continuous probability distribution whose probability density function takes the following formula:
 
 ![formula](https://mathworld.wolfram.com/images/equations/NormalDistribution/NumberedEquation1.gif)
 
-where μ is the mean and σ is the standard deviation of the distribution. 
+where μ is the mean and σ is the standard deviation of the distribution.
 
-The normal distribution derives its importance from the **Central Limit Theorem**, which states that if we draw a large enough number of samples, their mean will follow a normal distribution regardless of the initial distribution of the sample, i.e **the distribution of the mean of the samples is normal**. It is important that each sample is independent from the other. 
+The normal distribution derives its importance from the **Central Limit Theorem**, which states that if we draw a large enough number of samples, their mean will follow a normal distribution regardless of the initial distribution of the sample, i.e **the distribution of the mean of the samples is normal**. It is important that each sample is independent from the other.
 
-This is powerful because it helps us study processes whose population distribution is unknown to us. 
+This is powerful because it helps us study processes whose population distribution is unknown to us.
 
 
 <br/>
@@ -72,7 +98,7 @@ This is powerful because it helps us study processes whose population distributi
 **How do we check if a variable follows the normal distribution? ‍⭐️**
 
 1. Plot a histogram out of the sampled data. If you can fit the bell-shaped "normal" curve to the histogram, then the hypothesis that the underlying random variable follows the normal distribution can not be rejected.
-2. Check Skewness and Kurtosis of the sampled data. Zero-skewness and zero-kurtosis are typical for a normal distribution, so the farther away from 0, the more non-normal the distribution.
+2. Check Skewness and Kurtosis of the sampled data. Skewness = 0 and kurtosis = 3 are typical for a normal distribution, so the farther away they are from these values, the more non-normal the distribution.
 3. Use Kolmogorov-Smirnov or/and Shapiro-Wilk tests for normality. They take into account both Skewness and Kurtosis simultaneously.
 4. Check for Quantile-Quantile plot. It is a scatterplot created by plotting two sets of quantiles against one another. Normal Q-Q plot place the data points in a roughly straight line.
 
@@ -80,7 +106,9 @@ This is powerful because it helps us study processes whose population distributi
 
 **What if we want to build a model for predicting prices? Are prices distributed normally? Do we need to do any pre-processing for prices? ‍⭐️**
 
-Answer here
+Data is not normal. Specially, real-world datasets or uncleaned datasets always have certain skewness. Same goes for the price prediction. Price of houses or any other thing under consideration depends on a number of factors. So, there's a great chance of presence of some skewed values i.e outliers if we talk in data science terms. 
+
+Yes, you may need to do pre-processing. Most probably, you will need to remove the outliers to make your distribution near-to-normal.
 
 <br/>
 
@@ -126,6 +154,20 @@ MSE stands for <strong>M</strong>ean <strong>S</strong>quare <strong>E</strong>r
 
 <br/>
 
+**What is the bias-variance trade-off? 👶**
+
+**Bias** is the error introduced by approximating the true underlying function, which can be quite complex, by a simpler model. **Variance** is a model sensitivity to changes in the training dataset.
+
+**Bias-variance trade-off** is a relationship between the expected test error and the variance and the bias - both contribute to the level of the test error and ideally should be as small as possible:
+
+```
+ExpectedTestError = Variance + Bias² + IrreducibleError
+```
+
+But as a model complexity increases, the bias decreases and the variance increases which leads to *overfitting*. And vice versa, model simplification helps to decrease the variance but it increases the bias which leads to *underfitting*.
+
+<br/>
+
 
 ## Validation
 
@@ -137,7 +179,10 @@ When your model perform very well on your training set but can't generalize the 
 
 **How to validate your models? 👶**
 
-Answer here
+One of the most common approaches is splitting data into train, validation and test parts.
+Models are trained on train data, hyperparameters (for example early stopping) are selected based on the validation data, the final measurement is done on test dataset.
+Another approach is cross-validation: split dataset into K folds and each time train models on training folds and measure the performance on the validation folds.
+Also you could combine these approaches: make a test/holdout dataset and do cross-validation on the rest of the data. The final quality is measured on test dataset.
 
 <br/>
 
@@ -178,25 +223,34 @@ Classification problems are problems in which our prediction space is discrete, 
 
 **What is logistic regression? When do we need to use it? 👶**
 
-Logistic regression is a Machine Learning algorithm that is used for binary classification classification. You should use logistic regression when your Y variable takes only two values, e.g. True and False, "spam" and "not spam", "churn" and "not churn" and so on. The variable is said to be a "binary" or "dichotomous".
+Logistic regression is a Machine Learning algorithm that is used for binary classification. You should use logistic regression when your Y variable takes only two values, e.g. True and False, "spam" and "not spam", "churn" and "not churn" and so on. The variable is said to be a "binary" or "dichotomous".
 
 <br/>
 
 **Is logistic regression a linear model? Why? 👶**
 
-Answer here
+Yes, Logistic Regression is considered a generalized linear model because the outcome always depends on the sum of the inputs and parameters. Or in other words, the output cannot depend on the product (or quotient, etc.) of its parameters.
 
 <br/>
 
 **What is sigmoid? What does it do? 👶**
 
-Answer here
+A sigmoid function is a type of activation function, and more specifically defined as a squashing function. Squashing functions limit the output to a range between 0 and 1, making these functions useful in the prediction of probabilities.
+
+Sigmod(x) = 1/(1+e^{-x})
 
 <br/>
 
 **How do we evaluate classification models? 👶**
 
-Answer here
+Depending on the classification problem, we can use the following evaluation metrics:
+
+1. Accuracy
+2. Precision
+3. Recall
+4. F1 Score
+5. Logistic loss (also known as Cross-entropy loss)
+6. Jaccard similarity coefficient score
 
 <br/>
 
@@ -208,13 +262,13 @@ Accuracy is a metric for evaluating classification models. It is calculated by d
 
 **Is accuracy always a good metric? 👶**
 
-Accuracy is not a good performance metric when there is imbalance in the dataset. For example, in binary classification with 95% of A class and 5% of B class, prediction accuracy can be 95%. In case of imbalance dataset, we need to choose Precision, recall, or F1 Score depending on the problem we are trying to solve. 
+Accuracy is not a good performance metric when there is imbalance in the dataset. For example, in binary classification with 95% of A class and 5% of B class, prediction accuracy can be 95%. In case of imbalance dataset, we need to choose Precision, recall, or F1 Score depending on the problem we are trying to solve.
 
 <br/>
 
 **What is the confusion table? What are the cells in this table? 👶**
 
-Confusion table (or confusion matrix) shows how many True positives (TP), True Negative (TN), False Positive (FP) and False Negative (FN) model has made. 
+Confusion table (or confusion matrix) shows how many True positives (TP), True Negative (TN), False Positive (FP) and False Negative (FN) model has made.
 
 ||                |     Actual   |        Actual |
 |:---:|   :---:        |     :---:    |:---:          |
@@ -227,7 +281,7 @@ Confusion table (or confusion matrix) shows how many True positives (TP), True N
 * False Positive (FP): When the actual class of the observation is 0 (False) and the prediction is 1 (True)
 * False Negative (FN): When the actual class of the observation is 1 (True) and the prediction is 0 (False)
 
-Most of the performance metrics for classification models are based on the values of the confusion matrix. 
+Most of the performance metrics for classification models are based on the values of the confusion matrix.
 
 <br/>
 
@@ -237,63 +291,79 @@ Most of the performance metrics for classification models are based on the value
 * P = TP / (TP + FP) and R = TP / (TP + FN).
 * Where TP is true positives, FP is false positives and FN is false negatives
 * In both cases the score of 1 is the best: we get no false positives or false negatives and only true positives.
-* F1 is a combination of both precision and recall in one score:
-* F1 = 2 * PR / (P + R). 
+* F1 is a combination of both precision and recall in one score (harmonic mean):
+* F1 = 2 * PR / (P + R).
 * Max F score is 1 and min is 0, with 1 being the best.
 
 <br/>
 
 **Precision-recall trade-off ‍⭐️**
 
-Answer here
+Tradeoff means increasing one parameter would lead to decreasing of other. Precision-recall tradeoff occur due to increasing one of the parameter(precision or recall) while keeping the model same. 
+
+In an ideal scenario where there is a perfectly separable data, both precision and recall can get maximum value of 1.0. But in most of the practical situations, there is noise in the dataset and the dataset is not perfectly separable. There might be some points of positive class closer to the negative class and vice versa. In such cases, shifting the decision boundary can either increase the precision or recall but not both. Increasing one parameter leads to decreasing of the other. 
 
 <br/>
 
 **What is the ROC curve? When to use it? ‍⭐️**
 
-Answer here
+ROC stands for *Receiver Operating Characteristics*. The diagrammatic representation that shows the contrast between true positive rate vs true negative rate. It is used when we need to predict the probability of the binary outcome.
 
 <br/>
 
 **What is AUC (AU ROC)? When to use it? ‍⭐️**
 
-Answer here
+AUC stands for *Area Under the ROC Curve*. ROC is a probability curve and AUC represents degree or measure of separability. It's used when we need to value how much model is capable of distinguishing between classes.  The value is between 0 and 1, the higher the better.
 
 <br/>
 
 **How to interpret the AU ROC score? ‍⭐️**
 
-Answer here
+AUC score is the value of *Area Under the ROC Curve*. 
+
+If we assume ROC curve consists of dots, <img src="https://render.githubusercontent.com/render/math?math=(x_1, y_1), (x_2, y_2), \cdots, (x_m,y_m)">, then
+
+<img src="https://render.githubusercontent.com/render/math?math=AUC = \frac{1}{2} \sum_{i=1}^{m-1}(x_{i%2B1}-x_i)\cdot (y_i%2By_{i%2B1})">
+
+An excellent model has AUC near to the 1 which means it has good measure of separability. A poor model has AUC near to the 0 which means it has worst measure of separability. When AUC score is 0.5, it means model has no class separation capacity whatsoever. 
 
 <br/>
 
 **What is the PR (precision-recall) curve? ‍⭐️**
 
-Answer here
+A *precision*-*recall curve* (or PR Curve) is a plot of the precision (y-axis) and the recall (x-axis) for different probability thresholds. Precision-recall curves (PR curves) are recommended for highly skewed domains where ROC curves may provide an excessively optimistic view of the performance.
 
 <br/>
 
 **What is the area under the PR curve? Is it a useful metric? ‍⭐️I**
 
-Answer here
+The Precision-Recall AUC is just like the ROC AUC, in that it summarizes the curve with a range of threshold values as a single score.
+
+A high area under the curve represents both high recall and high precision, where high precision relates to a low false positive rate, and high recall relates to a low false negative rate.
 
 <br/>
 
 **In which cases AU PR is better than AU ROC? ‍⭐️**
 
-Answer here
+What is different however is that AU ROC looks at a true positive rate TPR and false positive rate FPR while AU PR looks at positive predictive value PPV and true positive rate TPR.
+
+Typically, if true negatives are not meaningful to the problem or you care more about the positive class, AU PR is typically going to be more useful; otherwise, If you care equally about the positive and negative class or your dataset is quite balanced, then going with AU ROC is a good idea.
 
 <br/>
 
 **What do we do with categorical variables? ‍⭐️**
 
-Answer here
+Categorical variables must be encoded before they can be used as features to train a machine learning model. There are various encoding techniques, including:
+- One-hot encoding
+- Label encoding
+- Ordinal encoding
+- Target encoding
 
 <br/>
 
 **Why do we need one-hot encoding? ‍⭐️**
 
-Answer here
+If we simply encode categorical variables with a Label encoder, they become ordinal which can lead to undesirable consequences. In this case, linear models will treat category with id 4 as twice better than a category with id 2. One-hot encoding allows us to represent a categorical variable in a numerical vector space which ensures that vectors of each category have equal distances between each other. This approach is not suited for all situations, because by using it with categorical variables of high cardinality (e.g. customer id) we will encounter problems that come into play because of the curse of dimensionality.
 
 <br/>
 
@@ -302,8 +372,7 @@ Answer here
 
 **What happens to our linear regression model if we have three columns in our data: x, y, z  —  and z is a sum of x and y? ‍⭐️**
 
-Answer here
-
+We would not be able to perform the resgression. Beacuse z is linear dependent of x and y so when performing the regression <img src="https://render.githubusercontent.com/render/math?math={X}^{T}{X}"> would be a singular (not invertible) matrix.
 <br/>
 
 **What happens to our linear regression model if the column z in the data is a sum of columns x and y and some random noise? ‍⭐️**
@@ -314,25 +383,30 @@ Answer here
 
 **What is regularization? Why do we need it? 👶**
 
-Answer here
+Regularization is used to reduce overfitting in machine learning models. It helps the models to generalize well and make them robust to outliers and noise in the data.
 
 <br/>
 
 **Which regularization techniques do you know? ‍⭐️**
 
-Answer here
+There are mainly two types of regularization,
+1. L1 Regularization (Lasso regularization) - Adds the sum of absolute values of the coefficients to the cost function. <img src="https://render.githubusercontent.com/render/math?math=\lambda\sum_{i=1}^{n} \left | w_i \right |">
+2. L2 Regularization (Ridge regularization) - Adds the sum of squares of coefficients to the cost function. <img src="https://render.githubusercontent.com/render/math?math=\lambda\sum_{i=1}^{n} {w_{i}}^{2}">
+
+* Where <img src="https://render.githubusercontent.com/render/math?math=\lambda"> determines the amount of regularization.
 
 <br/>
 
 **What kind of regularization techniques are applicable to linear models? ‍⭐️**
 
-Answer here
+AIC/BIC, Ridge regression, Lasso, Basis pursuit denoising, Rudin–Osher–Fatemi model (TV), Potts model, RLAD,
+Dantzig Selector,SLOPE
 
 <br/>
 
 **How does L2 regularization look like in a linear model? ‍⭐️**
 
-Answer here
+L2 regularization adds a penalty term to our cost function which is equal to the sum of squares of models coefficients multiplied by a lambda hyperparameter. This technique makes sure that the coefficients are close to zero and is widely used in cases when we have a lot of features that might correlate with each other.
 
 <br/>
 
@@ -395,7 +469,7 @@ Answer here
 
 **What is feature selection? Why do we need it? 👶**
 
-Answer here
+Answer Feature Selection is a method used to select the relevant features for the model to train on. We need feature selection to remove the irrelevant features which leads the model to under-perform.  
 
 <br/>
 
@@ -407,13 +481,16 @@ Answer here
 
 **Which feature selection techniques do you know? ‍⭐️**
 
-Answer here
+Here are some of the feature selections:
+- Principal Component Analysis
+- Neighborhood Component Analysis
+- ReliefF Algorithm
 
 <br/>
 
 **Can we use L1 regularization for feature selection? ‍⭐️**
 
-Answer here
+Yes, because the nature of L1 regularization will lead to sparse coefficients of features. Feature selection can be done by keeping only features with non-zero coefficients.
 
 <br/>
 
@@ -428,37 +505,50 @@ Answer here
 
 **What are the decision trees? 👶**
 
-Answer here
+This is a type of supervised learning algorithm that is mostly used for classification problems. Surprisingly, it works for both categorical and continuous dependent variables. 
+
+In this algorithm, we split the population into two or more homogeneous sets. This is done based on most significant attributes/ independent variables to make as distinct groups as possible.
+
+A decision tree is a flowchart-like tree structure, where each internal node (non-leaf node) denotes a test on an attribute, each branch represents an outcome of the test, and each leaf node (or terminal node) holds a value for the target variable.
+
+Various techniques : like Gini, Information Gain, Chi-square, entropy.
 
 <br/>
 
 **How do we train decision trees? ‍⭐️**
 
-Answer here
+1. Start at the root node.
+2. For each variable X, find the set S_1 that minimizes the sum of the node impurities in the two child nodes and choose the split {X*,S*} that gives the minimum over all X and S.
+3. If a stopping criterion is reached, exit. Otherwise, apply step 2 to each child node in turn.
 
 <br/>
 
 **What are the main parameters of the decision tree model? 👶**
 
-Answer here
+* maximum tree depth
+* minimum samples per leaf node
+* impurity criterion
 
 <br/>
 
 **How do we handle categorical variables in decision trees? ‍⭐️**
 
-Answer here
+Some decision tree algorithms can handle categorical variables out of the box, others cannot. However, we can transform categorical variables, e.g. with a binary or a one-hot encoder.
 
 <br/>
 
 **What are the benefits of a single decision tree compared to more complex models? ‍⭐️**
 
-Answer here
+* easy to implement
+* fast training
+* fast inference
+* good explainability
 
 <br/>
 
 **How can we know which features are more important for the decision tree model? ‍⭐️**
 
-Answer here
+Often, we want to find a split such that it minimizes the sum of the node impurities. The impurity criterion is a parameter of decision trees. Popular methods to measure the impurity are the Gini impurity and the entropy describing the information gain.
 
 <br/>
 
@@ -467,37 +557,60 @@ Answer here
 
 **What is random forest? 👶**
 
-Answer here
+Random Forest is a machine learning method for regression and classification which is composed of many decision trees. Random Forest belongs to a larger class of ML algorithms called ensemble methods (in other words, it involves the combination of several models to solve a single prediction problem).
 
 <br/>
 
 **Why do we need randomization in random forest? ‍⭐️**
 
-Answer here
+Random forest in an extention of the **bagging** algorithm which takes *random data samples from the training dataset* (with replacement), trains several models and averages predictions. In addition to that, each time a split in a tree is considered, random forest takes a *random sample of m features from full set of n features* (with replacement) and uses this subset of features as candidates for the split (for example, `m = sqrt(n)`).
+
+Training decision trees on random data samples from the training dataset *reduces variance*. Sampling features for each split in a decision tree *decorrelates trees*.
 
 <br/>
 
 **What are the main parameters of the random forest model? ‍⭐️**
 
-Answer here
+- `max_depth`: Longest Path between root node and the leaf
+- `min_sample_split`: The minimum number of observations needed to split a given node
+- `max_leaf_nodes`: Conditions the splitting of the tree and hence, limits the growth of the trees
+- `min_samples_leaf`: minimum number of samples in the leaf node
+- `n_estimators`: Number of trees
+- `max_sample`: Fraction of original dataset given to any individual tree in the given model
+- `max_features`: Limits the maximum number of features provided to trees in random forest model
 
 <br/>
 
 **How do we select the depth of the trees in random forest? ‍⭐️**
 
-Answer here
+The greater the depth, the greater amount of information is extracted from the tree, however, there is a limit to this, and the algorithm even if defensive against overfitting may learn complex features of noise present in data and as a result, may overfit on noise. Hence, there is no hard thumb rule in deciding the depth, but literature suggests a few tips on tuning the depth of the tree to prevent overfitting:
+
+- limit the maximum depth of a tree
+- limit the number of test nodes
+- limit the minimum number of objects at a node required to split
+- do not split a node when, at least, one of the resulting subsample sizes is below a given threshold
+- stop developing a node if it does not sufficiently improve the fit.
 
 <br/>
 
 **How do we know how many trees we need in random forest? ‍⭐️**
 
-Answer here
+The number of trees in random forest is worked by n_estimators, and a random forest reduces overfitting by increasing the number of trees. There is no fixed thumb rule to decide the number of trees in a random forest, it is rather fine tuned with the data, typically starting off by taking the square of the number of features (n) present in the data followed by tuning until we get the optimal results.
 
 <br/>
 
 **Is it easy to parallelize training of a random forest model? How can we do it? ‍⭐️**
 
-Answer here
+Yes, R provides a simple way to parallelize training of random forests on large scale data.
+It makes use of a parameter called multicombine which can be set to TRUE for parallelizing random forest computations.
+
+```R
+rf <- foreach(ntree=rep(25000, 6), .combine=randomForest::combine,
+              .multicombine=TRUE, .packages='randomForest') %dopar% {
+    randomForest(x, y, ntree=ntree)
+}
+```
+
 
 <br/>
 
@@ -515,7 +628,9 @@ Answer here
 
 **What happens when we have correlated features in our data? ‍⭐️**
 
-Answer here
+In random forest, since random forest samples some features to build each tree, the information contained in correlated features is twice as much likely to be picked than any other information contained in other features. 
+
+In general, when you are adding correlated features, it means that they linearly contains the same information and thus it will reduce the robustness of your model. Each time you train your model, your model might pick one feature or the other to "do the same job" i.e. explain some variance, reduce entropy, etc.
 
 <br/>
 
@@ -524,7 +639,7 @@ Answer here
 
 **What is gradient boosting trees? ‍⭐️**
 
-Answer here
+Gradient boosting is a machine learning technique for regression and classification problems, which produces a prediction model in the form of an ensemble of weak prediction models, typically decision trees.
 
 <br/>
 
@@ -574,15 +689,21 @@ Answer here
 
 ## Parameter tuning
 
-**Which parameter tuning strategies (in general) do you know? ‍⭐️**
+**Which hyper-parameter tuning strategies (in general) do you know? ‍⭐️**
 
-Answer here
+There are several strategies for hyper-tuning but I would argue that the three most popular nowadays are the following:
+* <b>Grid Search</b> is an exhaustive approach such that for each hyper-parameter, the user needs to <i>manually</i> give a list of values for the algorithm to try. After these values are selected, grid search then evaluates the algorithm using each and every combination of hyper-parameters and returns the combination that gives the optimal result (i.e. lowest MAE). Because grid search evaluates the given algorithm using all combinations, it's easy to see that this can be quite computationally expensive and can lead to sub-optimal results specifically since the user needs to specify specific values for these hyper-parameters, which is prone for error and requires domain knowledge.
+
+* <b>Random Search</b> is similar to grid search but differs in the sense that rather than specifying which values to try for each hyper-parameter, an upper and lower bound of values for each hyper-parameter is given instead. With uniform probability, random values within these bounds are then chosen and similarly, the best combination is returned to the user. Although this seems less intuitive, no domain knowledge is necessary and theoretically much more of the parameter space can be explored.
+
+* In a completely different framework, <b>Bayesian Optimization</b> is thought of as a more statistical way of optimization and is commonly used when using neural networks, specifically since one evaluation of a neural network can be computationally costly. In numerous research papers, this method heavily outperforms Grid Search and Random Search and is currently used on the Google Cloud Platform as well as AWS. Because an in-depth explanation requires a heavy background in bayesian statistics and gaussian processes (and maybe even some game theory), a "simple" explanation is that a much simpler/faster <i>acquisition function</i> intelligently chooses (using a <i>surrogate function</i> such as probability of improvement or GP-UCB) which hyper-parameter values to try on the computationally expensive, original algorithm. Using the result of the initial combination of values on the expensive/original function, the acquisition function takes the result of the expensive/original algorithm into account and uses it as its prior knowledge to again come up with another set of hyper-parameters to choose during the next iteration. This process continues either for a specified number of iterations or for a specified amount of time and similarly the combination of hyper-parameters that performs the best on the expensive/original algorithm is chosen.
+
 
 <br/>
 
 **What’s the difference between grid search parameter tuning strategy and random search? When to use one or another? ‍⭐️**
 
-Answer here
+For specifics, refer to the above answer.
 
 <br/>
 
@@ -603,7 +724,7 @@ Answer here
 
 **Why do we need activation functions? 👶**
 
-Answer here
+The main idea of using neural networks is to learn complex nonlinear functions. If we are not using an activation function in between different layers of a neural network, we are just stacking up multiple linear layers one on top of another and this leads to learning a linear function. The Nonlinearity comes only with the activation function, this is the reason we need activation functions.
 
 <br/>
 
@@ -615,7 +736,7 @@ The output of the sigmoid function for large positive or negative numbers is alm
 
 **What is ReLU? How is it better than sigmoid or tanh? ‍⭐️**
 
-Answer here
+ReLU is an abbreviation for Rectified Linear Unit. It is an activation function which has the value 0 for all negative values and the value f(x) = x for all positive values. The ReLU has a simple activation function which makes it fast to compute and while the sigmoid and tanh activation functions saturate at higher values, the ReLU has a potentially infinite activation, which addresses the problem of vanishing gradients. 
 
 <br/>
 
@@ -627,19 +748,21 @@ Answer here
 
 **What if we set all the weights of a neural network to 0? ‍⭐️**
 
-Answer here
+If all the weights of a neural network are set to zero, the output of each connection is same (W*x = 0). This means the gradients which are backpropagated to each connection in a layer is same. This means all the connections/weights learn the same thing, and the model never converges. 
 
 <br/>
 
 **What regularization techniques for neural nets do you know? ‍⭐️**
 
-Answer here
-
+* L1 Regularization - Defined as the sum of absolute values of the individual parameters. The L1 penalty causes a subset of the weights to become zero, suggesting that the corresponding features may safely be discarded. 
+* L2 Regularization - Defined as the sum of square of individual parameters. Often supported by regularization hyperparameter alpha. It results in weight decay. 
+* Data Augmentation - This requires some fake data to be created as a part of training set. 
+* Drop Out : This is most effective regularization technique for newral nets. Few randome nodes in each layer is deactivated in forward pass. This allows the algorithm to train on different set of nodes in each iterations.
 <br/>
 
 **What is dropout? Why is it useful? How does it work? ‍⭐️**
 
-Answer here
+Dropout is a technique that at each training step turns off each neuron with a certain probability of *p*. This way at each iteration we train only *1-p* of neurons, which forces the network not to rely only on the subset of neurons for feature representation. This leads to regularizing effects that are controlled by the hyperparameter *p*.  
 
 <br/>
 
@@ -690,7 +813,7 @@ Answer here
 
 **When would you use Adam and when SGD? ‍⭐️**
 
-Answer here
+Adam tends to converge faster, while SGD often converges to more optimal solutions.
 
 <br/>
 
@@ -729,25 +852,31 @@ Answer here
 
 **What’s a convolutional layer? ‍⭐️**
 
-Answer here
+The idea of the convolutional layer is the assumption that the information needed for making a decision often is spatially close and thus, it only takes the weighted sum over nearby inputs. It also assumes that the networks’ kernels can be reused for all nodes, hence the number of weights can be drastically reduced. To counteract only one feature being learnt per layer, multiple kernels are applied to the input which creates parallel channels in the output. Consecutive layers can also be stacked to allow the network to find more high-level features.
 
 <br/>
 
 **Why do we actually need convolutions? Can’t we use fully-connected layers for that? ‍⭐️**
 
-Answer here
+A fully-connected layer needs one weight per inter-layer connection, which means the number of weights which needs to be computed quickly balloons as the number of layers and nodes per layer is increased. 
 
 <br/>
 
 **What’s pooling in CNN? Why do we need it? ‍⭐️**
 
-Answer here
+Pooling is a technique to downsample the feature map. It allows layers which receive relatively undistorted versions of the input to learn low level features such as lines, while layers deeper in the model can learn more abstract features such as texture.
 
 <br/>
 
 **How does max pooling work? Are there other pooling techniques? ‍⭐️**
 
-Answer here
+Max pooling is a technique where the maximum value of a receptive field is passed on in the next feature map. The most commonly used receptive field is 2 x 2 with a stride of 2, which means the feature map is downsampled from N x N to N/2 x N/2. Receptive fields larger than 3 x 3 are rarely employed as too much information is lost. 
+
+Other pooling techniques include:
+
+* Average pooling, the output is the average value of the receptive field.
+* Min pooling, the output is the minimum value of the receptive field.
+* Global pooling, where the receptive field is set to be equal to the input size, this means the output is equal to a scalar and can be used to reduce the dimensionality of the feature map. 
 
 <br/>
 
@@ -757,7 +886,19 @@ Answer here
 
 <br/>
 
-**What are augmentations? Why do we need them? 👶What kind of augmentations do you know? 👶How to choose which augmentations to use? ‍⭐️**
+**What are augmentations? Why do we need them? 👶**
+
+Answer here
+
+<br/>
+
+**What kind of augmentations do you know? 👶**
+
+Answer here
+
+<br/>
+
+**How to choose which augmentations to use? ‍⭐️**
 
 Answer here
 
@@ -818,7 +959,7 @@ Disadvantages:
 
 **What are N-grams? How can we use them? ‍⭐️**
 
-The function to tokenize into consecutive sequences of words is called n-grams. It can be used to find out N most co-occurring words (how often word X is followed by word Y) in a given sentence. 
+The function to tokenize into consecutive sequences of words is called n-grams. It can be used to find out N most co-occurring words (how often word X is followed by word Y) in a given sentence.
 
 <br/>
 
@@ -830,8 +971,7 @@ Answer here
 
 **What is TF-IDF? How is it useful for text classification? ‍⭐️**
 
-Term Frequency (TF) is a scoring of the frequency of the word in the current document. Inverse Document Frequency(IDF) is a scoring of how rare the word is across documents. It is used in scenario where highy recurring words may not contain as much informational content 
-as the domain specific words. For example, words like “the” that are frequent across all documents therefore need to be less weighted. The Tf-IDF score highlights words that are distinct (contain useful information) in a given document.  
+Term Frequency (TF) is a scoring of the frequency of the word in the current document. Inverse Document Frequency(IDF) is a scoring of how rare the word is across documents. It is used in scenario where highly recurring words may not contain as much informational content as the domain specific words. For example, words like “the” that are frequent across all documents therefore need to be less weighted. The TF-IDF score highlights words that are distinct (contain useful information) in a given document.  
 
 <br/>
 
@@ -843,7 +983,7 @@ Answer here
 
 **Would you prefer gradient boosting trees model or logistic regression when doing text classification with bag of words? ‍⭐️**
 
-Answer here
+Usually logistic regression is better because bag of words creates a matrix with large number of columns. For a huge number of columns logistic regression is usually faster than gradient boosting trees.
 
 <br/>
 
@@ -861,7 +1001,11 @@ Answer here
 
 **If you have a sentence with multiple words, you may need to combine multiple word embeddings into one. How would you do it? ‍⭐️**
 
-Answer here
+Approaches ranked from simple to more complex:
+
+1. Take an average over all words
+2. Take a weighted average over all words. Weighting can be done by inverse document frequency (idf part of tf-idf).
+3. Use ML model like LSTM or Transformer.
 
 <br/>
 
@@ -894,7 +1038,7 @@ Unsupervised learning aims to detect paterns in data where no labels are given.
 
 **What is clustering? When do we need it? 👶**
 
-Clustering algorithms group objects such that similar feature points are put into the same groups (clusters) and dissimilar feature points are put into different clusters. 
+Clustering algorithms group objects such that similar feature points are put into the same groups (clusters) and dissimilar feature points are put into different clusters.
 
 <br/>
 
@@ -992,7 +1136,12 @@ Answer here
 
 **What is precision and recall at k? ‍⭐️**
 
-Answer here
+Precision at k and recall at k are evaluation metrics for ranking algorithms. Precision at k shows the share of relevant items in the first *k* results of the ranking algorithm. And Recall at k indicates the share of relevant items returned in top *k* results out of all correct answers for a given query.
+
+Example:
+For a search query "Car" there are 3 relevant products in your shop. Your search algorithm returns 2 of those relevant products in the first 5 search results.
+Precision at 5 = # num of relevant products in search result / k = 2/5 = 40%
+Recall at 5 = # num of relevant products in search result / # num of all relevant products = 2/3 = 66.6%
 
 <br/>
 
@@ -1060,11 +1209,11 @@ Recommender systems are software tools and techniques that provide suggestions f
 
 * Collaborative filtering is the most prominent approach to generate recommendations.
 * It uses the wisdom of the crowd, i.e. it gives recommendations based on the experience of others.
-* A recommendation is calculated as the average of other experiences. 
+* A recommendation is calculated as the average of other experiences.
 * Say we want to give a score that indicates how much user u will like an item i. Then we can calculate it with the experience of N other users U as r_ui = 1/N * sum(v in U) r_vi.
 * In order to rate similar experiences with a higher weight, we can introduce a similarity between users that we use as a multiplier for each rating.
 * Also, as users have an individual profile, one user may have an average rating much larger than another user, so we use normalization techniques (e.g. centering or Z-score normalization) to remove the users' biases.
-* Collaborative filtering does only need a rating matrix as input and improves over time. However, it does not work well on sparse data, does not work for cold starts (see below) and usually tends to overfit. 
+* Collaborative filtering does only need a rating matrix as input and improves over time. However, it does not work well on sparse data, does not work for cold starts (see below) and usually tends to overfit.
 
 <br/>
 
@@ -1136,4 +1285,3 @@ Given the assumption that the set of features gives a meaningful causation to y,
 Random Forest models are not able to extrapolate time series data and understand increasing/decreasing trends. It will provide us with average data points if the validation data has values greater than the training data points.
 
 <br/>
-
